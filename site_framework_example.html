@@ -1,0 +1,116 @@
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;800&family=DM+Sans:ital,wght@0,300;0,400;1,300&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  .site{font-family:'DM Sans',sans-serif;background:var(--color-background-primary);color:var(--color-text-primary);min-height:100vh;overflow:hidden}
+  nav{display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;border-bottom:0.5px solid var(--color-border-tertiary)}
+  .logo{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;letter-spacing:-0.02em}
+  .nav-links{display:flex;gap:1.5rem;list-style:none}
+  .nav-links a{font-size:13px;color:var(--color-text-secondary);text-decoration:none;transition:color .2s}
+  .nav-links a:hover{color:var(--color-text-primary)}
+  .nav-cta{background:#1a1a1a;color:#fff;font-size:12px;padding:7px 16px;border-radius:999px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+  .hero{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;padding:4rem 2rem 3rem;max-width:900px;margin:0 auto}
+  .hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);font-size:11px;color:var(--color-text-secondary);padding:4px 10px;border-radius:999px;margin-bottom:1.2rem}
+  .dot{width:6px;height:6px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  h1{font-family:'Syne',sans-serif;font-weight:800;font-size:2.4rem;line-height:1.08;letter-spacing:-0.04em;margin-bottom:1rem}
+  h1 span{color:#6366f1}
+  .hero-sub{font-size:14px;color:var(--color-text-secondary);line-height:1.7;margin-bottom:1.8rem;font-weight:300}
+  .btn-group{display:flex;gap:10px}
+  .btn-primary{background:#6366f1;color:#fff;font-size:13px;padding:10px 22px;border-radius:999px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:400}
+  .btn-secondary{background:transparent;color:var(--color-text-primary);font-size:13px;padding:10px 22px;border-radius:999px;border:0.5px solid var(--color-border-secondary);cursor:pointer;font-family:'DM Sans',sans-serif}
+  .hero-visual{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:16px;padding:1.5rem;position:relative;overflow:hidden}
+  .code-block{background:var(--color-background-tertiary);border:0.5px solid var(--color-border-tertiary);border-radius:10px;padding:1rem;font-family:'DM Mono',monospace;font-size:11px;line-height:1.7}
+  .kw{color:#818cf8}.fn{color:#34d399}.str{color:#fb923c}.cm{color:var(--color-text-tertiary)}
+  .framework-badge{position:absolute;top:1rem;right:1rem;background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:8px;padding:6px 10px;font-size:10px;font-weight:500;color:var(--color-text-secondary)}
+  .divider{height:0.5px;background:var(--color-border-tertiary);margin:0 2rem}
+  .stacks{padding:2.5rem 2rem;max-width:900px;margin:0 auto}
+  .stacks-title{font-size:11px;letter-spacing:.08em;color:var(--color-text-tertiary);text-transform:uppercase;margin-bottom:1.5rem}
+  .stack-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .stack-card{background:var(--color-background-secondary);border:0.5px solid var(--color-border-tertiary);border-radius:12px;padding:1rem 1.2rem;transition:border-color .2s,transform .2s;cursor:default}
+  .stack-card:hover{border-color:var(--color-border-primary);transform:translateY(-2px)}
+  .stack-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:.8rem;font-size:14px;font-weight:700;font-family:'Syne',sans-serif}
+  .icon-react{background:#e0f2fe;color:#0284c7}
+  .icon-tailwind{background:#f0fdf4;color:#16a34a}
+  .icon-vite{background:#faf5ff;color:#9333ea}
+  .stack-name{font-size:13px;font-weight:500;margin-bottom:.2rem}
+  .stack-desc{font-size:11px;color:var(--color-text-secondary);line-height:1.5}
+  .footer-bar{margin:0 2rem;border-top:0.5px solid var(--color-border-tertiary);padding:1.2rem 0;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--color-text-tertiary)}
+</style>
+
+<div class="site">
+  <nav>
+    <span class="logo">devkit.</span>
+    <ul class="nav-links">
+      <li><a href="#">Docs</a></li>
+      <li><a href="#">Composants</a></li>
+      <li><a href="#">Templates</a></li>
+      <li><a href="#">Blog</a></li>
+    </ul>
+    <button class="nav-cta">Commencer →</button>
+  </nav>
+
+  <div class="hero">
+    <div>
+      <div class="hero-tag">
+        <span class="dot"></span>
+        Stack moderne · Open Source
+      </div>
+      <h1>Construis plus <span>vite</span> avec les bons frameworks</h1>
+      <p class="hero-sub">Un starter kit opinioné qui combine React, Tailwind CSS et Vite pour un workflow de développement optimal et une DX irréprochable.</p>
+      <div class="btn-group">
+        <button class="btn-primary">Voir la démo</button>
+        <button class="btn-secondary">GitHub →</button>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="framework-badge">React + Tailwind</div>
+      <div class="code-block">
+<pre><span class="cm">// App.tsx</span>
+<span class="kw">import</span> { useState } <span class="kw">from</span> <span class="str">'react'</span>
+<span class="kw">import</span> { Button } <span class="kw">from</span> <span class="str">'./components'</span>
+
+<span class="kw">export default function</span> <span class="fn">App</span>() {
+  <span class="kw">const</span> [count, setCount] = <span class="fn">useState</span>(0)
+
+  <span class="kw">return</span> (
+    &lt;<span class="fn">div</span> className=<span class="str">"flex gap-4"</span>&gt;
+      &lt;<span class="fn">Button</span>
+        onClick={() =&gt; <span class="fn">setCount</span>(c + 1)}&gt;
+        Clics : {count}
+      &lt;/<span class="fn">Button</span>&gt;
+    &lt;/<span class="fn">div</span>&gt;
+  )
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="stacks">
+    <p class="stacks-title">Frameworks utilisés</p>
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="stack-icon icon-react">Re</div>
+        <div class="stack-name">React 18</div>
+        <div class="stack-desc">Composants déclaratifs, hooks, Concurrent Mode. La référence du UI moderne.</div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon icon-tailwind">Tw</div>
+        <div class="stack-name">Tailwind CSS</div>
+        <div class="stack-desc">Utility-first CSS. Design directement dans le JSX, sans changer de fichier.</div>
+      </div>
+      <div class="stack-card">
+        <div class="stack-icon icon-vite">Vi</div>
+        <div class="stack-name">Vite 5</div>
+        <div class="stack-desc">Build ultra-rapide grâce à l'ESM natif. HMR instantané en développement.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bar">
+    <span>devkit. · MIT License</span>
+    <span>Construit avec React · Tailwind · Vite</span>
+  </div>
+</div>

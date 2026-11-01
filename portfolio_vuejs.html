@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portfolio Vue.js — KOUASSI JEAN JOEL IVES</title>
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #03031f;
+      --accent: #4f8eff;
+      --gold: #c9ac61;
+      --white: #f0f0f0;
+      --card: rgba(255,255,255,0.04);
+      --border: rgba(255,255,255,0.08);
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+    }
+    body.light {
+      --bg: #f0f0eb;
+      --white: #111;
+      --card: rgba(0,0,0,0.04);
+      --border: rgba(0,0,0,0.1);
+    }
+
+    /* NAV */
+    nav {
+      position: fixed; top:0; left:0; right:0;
+      background: rgba(3,3,31,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 32px; height: 60px;
+    }
+    body.light nav { background: rgba(240,240,235,0.9); }
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 14px; color: var(--accent);
+      letter-spacing: 1px;
+    }
+    .nav-links { display:flex; gap:24px; list-style:none; }
+    .nav-links a {
+      font-size: 13px; color: var(--white);
+      text-decoration: none; font-family: 'Space Mono', monospace;
+      opacity: 0.6; transition: opacity 0.2s;
+      cursor: pointer;
+    }
+    .nav-links a:hover, .nav-links a.active { opacity:1; color: var(--accent); }
+    .theme-btn {
+      background: var(--card); border: 1px solid var(--border);
+      color: var(--white); width:36px; height:36px;
+      border-radius:50%; font-size:16px; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center; padding: 80px 20px 40px;
+      position: relative;
+    }
+    .hero-tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px; color: var(--accent);
+      border: 1px solid rgba(79,142,255,0.3);
+      background: rgba(79,142,255,0.08);
+      padding: 5px 14px; border-radius:20px;
+      margin-bottom: 24px;
+      animation: fadeUp 0.5s ease both;
+    }
+    .hero h1 {
+      font-size: clamp(28px,6vw,56px);
+      font-weight: 800; line-height: 1.15;
+      margin-bottom: 16px;
+      animation: fadeUp 0.6s 0.1s ease both;
+    }
+    .hero h1 span { color: var(--accent); }
+    .hero-sub {
+      font-size: clamp(14px,2vw,18px);
+      color: #aaa; max-width: 560px;
+      line-height: 1.7; margin-bottom: 32px;
+      animation: fadeUp 0.6s 0.2s ease both;
+    }
+    .hero-btns {
+      display:flex; gap:12px; flex-wrap:wrap; justify-content:center;
+      animation: fadeUp 0.6s 0.3s ease both;
+    }
+    .btn-primary {
+      background: var(--accent); color: #03031f;
+      border: none; border-radius:30px;
+      padding: 12px 28px; font-family:'Space Mono',monospace;
+      font-size: 13px; font-weight:700; cursor:pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(79,142,255,0.3); }
+    .btn-outline {
+      background: transparent;
+      color: var(--white); border: 1.5px solid var(--border);
+      border-radius:30px; padding:12px 28px;
+      font-family:'Space Mono',monospace; font-size:13px;
+      cursor:pointer; transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* PHOTO */
+    .avatar-ring {
+      width:140px; height:140px; border-radius:50%;
+      background: conic-gradient(var(--accent), var(--gold), var(--accent));
+      display:flex; align-items:center; justify-content:center;
+      animation: spin 4s linear infinite, fadeUp 0.6s ease both;
+      margin-bottom: 28px;
+    }
+    @keyframes spin { to { transform:rotate(360deg); } }
+    .avatar-inner {
+      width:128px; height:128px; border-radius:50%;
+      background: var(--bg); overflow:hidden;
+      display:flex; align-items:center; justify-content:center;
+      font-size:48px;
+    }
+
+    /* SECTIONS */
+    section {
+      max-width: 900px; margin:0 auto;
+      padding: 80px 20px;
+    }
+    .section-title {
+      font-family:'Space Mono',monospace;
+      font-size: clamp(16px,2.5vw,22px);
+      color: var(--gold); letter-spacing:2px;
+      margin-bottom: 8px; text-align:center;
+    }
+    .section-title::after {
+      content:''; display:block;
+      width:40px; height:2px; background:var(--gold);
+      margin:8px auto 32px;
+    }
+    .section-tag {
+      text-align:center; font-size:12px;
+      color:#555; font-family:'Space Mono',monospace;
+      margin-bottom:32px; margin-top:-20px;
+    }
+    .section-tag code { color: var(--accent); }
+
+    /* STATS */
+    .stats-row {
+      display:flex; justify-content:center; gap:16px;
+      flex-wrap:wrap; margin-bottom:60px;
+    }
+    .stat-card {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:12px; padding:16px 28px; text-align:center;
+      transition: transform 0.3s, border-color 0.3s;
+    }
+    .stat-card:hover { transform:translateY(-4px); border-color:var(--accent); }
+    .stat-num {
+      font-family:'Space Mono',monospace;
+      font-size:28px; font-weight:700; color:var(--accent);
+    }
+    .stat-lbl { font-size:12px; color:#888; margin-top:4px; }
+
+    /* SKILLS */
+    .skills-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+      gap:12px;
+    }
+    .skill-card {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:12px; padding:16px;
+      transition:transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      cursor:pointer; text-align:left;
+    }
+    .skill-card:hover {
+      transform:translateY(-5px);
+      border-color:var(--accent);
+      box-shadow:0 8px 28px rgba(79,142,255,0.12);
+    }
+    .skill-top {
+      display:flex; justify-content:space-between;
+      align-items:center; margin-bottom:10px;
+    }
+    .skill-name-txt {
+      font-family:'Space Mono',monospace;
+      font-size:13px; color:var(--gold);
+      display:flex; align-items:center; gap:6px;
+    }
+    .skill-pct {
+      font-family:'Space Mono',monospace;
+      font-size:12px; color:var(--accent);
+    }
+    .skill-lvl { font-size:11px; color:#666; margin-bottom:8px; }
+    .bar-bg {
+      background:rgba(255,255,255,0.06);
+      border-radius:4px; height:5px; overflow:hidden;
+    }
+    .bar-fill {
+      height:100%; border-radius:4px;
+      transition:width 1.4s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    /* PROJETS */
+    .projects-grid {
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:14px;
+    }
+    .project-card {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:14px; padding:20px; text-align:left;
+      transition:transform 0.3s, border-color 0.3s;
+    }
+    .project-card:hover { transform:translateY(-4px); border-color:var(--gold); }
+    .proj-header {
+      display:flex; justify-content:space-between;
+      align-items:flex-start; margin-bottom:10px;
+    }
+    .proj-title { font-size:15px; font-weight:500; color:var(--white); }
+    .proj-status {
+      font-size:10px; padding:3px 9px;
+      border-radius:20px; font-family:'Space Mono',monospace;
+    }
+    .status-online { background:rgba(16,185,129,0.15); color:#34d399; border:1px solid #34d399; }
+    .status-progress { background:rgba(245,158,11,0.15); color:#fbbf24; border:1px solid #fbbf24; }
+    .proj-desc { font-size:13px; color:#aaa; line-height:1.6; margin-bottom:12px; }
+    .tech-tags { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:14px; }
+    .tech-tag {
+      background:rgba(79,142,255,0.1);
+      border:1px solid rgba(79,142,255,0.2);
+      color:var(--accent); font-size:11px;
+      padding:2px 8px; border-radius:10px;
+      font-family:'Space Mono',monospace;
+    }
+    .proj-link {
+      font-size:13px; color:var(--accent);
+      font-family:'Space Mono',monospace;
+      cursor:pointer; text-decoration:none;
+      border-bottom:1px solid transparent;
+      transition:border-color 0.2s;
+    }
+    .proj-link:hover { border-color:var(--accent); }
+
+    /* CONTACT */
+    .contact-form {
+      max-width:540px; margin:0 auto;
+      display:grid; gap:16px;
+    }
+    .form-group { display:flex; flex-direction:column; gap:6px; }
+    .form-group label {
+      font-size:12px; color:#888;
+      font-family:'Space Mono',monospace;
+    }
+    .form-group input,
+    .form-group textarea {
+      background:var(--card); border:1px solid var(--border);
+      color:var(--white); border-radius:10px;
+      padding:12px 14px; font-family:'Syne',sans-serif;
+      font-size:14px; outline:none; resize:vertical;
+      transition:border-color 0.3s;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color:var(--accent); }
+    .submit-btn {
+      background:var(--accent); color:#03031f;
+      border:none; border-radius:30px;
+      padding:14px; font-family:'Space Mono',monospace;
+      font-size:13px; font-weight:700;
+      cursor:pointer; transition:transform 0.2s, box-shadow 0.2s;
+    }
+    .submit-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(79,142,255,0.3); }
+    .submit-btn:disabled { opacity:0.6; cursor:not-allowed; transform:none; }
+
+    /* TOAST */
+    .toast {
+      position:fixed; bottom:30px; left:50%;
+      transform:translateX(-50%) translateY(100px);
+      background:var(--accent); color:#03031f;
+      padding:12px 24px; border-radius:30px;
+      font-family:'Space Mono',monospace; font-size:13px; font-weight:700;
+      transition:transform 0.4s ease; z-index:999;
+      pointer-events:none;
+    }
+    .toast.show { transform:translateX(-50%) translateY(0); }
+
+    /* FOOTER */
+    footer {
+      border-top:1px solid var(--border);
+      text-align:center; padding:24px;
+      font-size:13px; color:#555;
+      font-family:'Space Mono',monospace;
+    }
+    footer span { color:var(--gold); }
+
+    /* VUE TRANSITION */
+    .fade-enter-active, .fade-leave-active { transition:opacity 0.3s; }
+    .fade-enter-from, .fade-leave-to { opacity:0; }
+
+    @keyframes fadeUp {
+      from{opacity:0;transform:translateY(16px)}
+      to{opacity:1;transform:translateY(0)}
+    }
+
+    @media(max-width:600px) {
+      nav { padding:0 16px; }
+      .nav-links { gap:14px; }
+      .nav-links a { font-size:11px; }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- ═══ NAVBAR Vue ═══ -->
+  <nav>
+    <div class="nav-logo">{{ initiales }}.dev</div>
+    <ul class="nav-links">
+      <li v-for="section in sections" :key="section.id">
+        <a :class="{ active: activeSection === section.id }"
+           @click="scrollTo(section.id)">
+          {{ section.label }}
+        </a>
+      </li>
+    </ul>
+    <button class="theme-btn" @click="toggleTheme">{{ lightMode ? '🌙' : '☀️' }}</button>
+  </nav>
+
+  <!-- ═══ HERO ═══ -->
+  <div class="hero" id="hero">
+    <div class="hero-tag">{{ badge }}</div>
+
+    <div class="avatar-ring">
+      <div class="avatar-inner">🧑🏾‍💻</div>
+    </div>
+
+    <h1>Bonjour, je suis<br><span>{{ prenom }}</span></h1>
+    <p class="hero-sub">{{ bio }}</p>
+
+    <div class="hero-btns">
+      <button class="btn-primary" @click="scrollTo('projets')">Voir mes projets</button>
+      <button class="btn-outline" @click="scrollTo('contact')">Me contacter</button>
+    </div>
+  </div>
+
+  <!-- ═══ STATS ═══ -->
+  <section id="stats">
+    <div class="stats-row">
+      <div class="stat-card" v-for="stat in stats" :key="stat.label">
+        <div class="stat-num">{{ stat.animated }}</div>
+        <div class="stat-lbl">{{ stat.label }}</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ COMPÉTENCES ═══ -->
+  <section id="competences">
+    <div class="section-title">Compétences</div>
+    <p class="section-tag">Données gérées dans <code>data()</code> Vue.js — réactives</p>
+    <div class="skills-grid">
+      <div
+        class="skill-card"
+        v-for="skill in competences"
+        :key="skill.nom"
+        @click="showToast('💡 ' + skill.nom + ' — ' + skill.niveau + ' !')"
+      >
+        <div class="skill-top">
+          <div class="skill-name-txt">
+            <span>{{ skill.icone }}</span> {{ skill.nom }}
+          </div>
+          <span class="skill-pct">{{ skill.animated }}%</span>
+        </div>
+        <div class="skill-lvl">{{ skill.niveau }}</div>
+        <div class="bar-bg">
+          <div
+            class="bar-fill"
+            :style="{ width: skill.barWidth + '%', background: skill.couleur }"
+          ></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ PROJETS ═══ -->
+  <section id="projets">
+    <div class="section-title">Projets</div>
+    <p class="section-tag">Liste rendue avec <code>v-for</code> — ajoute un projet dans <code>data()</code></p>
+
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:24px;">
+      <button
+        v-for="filtre in filtres" :key="filtre"
+        @click="filtreActif = filtre"
+        :style="{
+          background: filtreActif === filtre ? 'var(--accent)' : 'var(--card)',
+          color: filtreActif === filtre ? '#03031f' : 'var(--white)',
+          border: '1px solid var(--border)', borderRadius:'20px',
+          padding:'6px 16px', cursor:'pointer',
+          fontFamily:'Space Mono,monospace', fontSize:'12px'
+        }"
+      >{{ filtre }}</button>
+    </div>
+
+    <div class="projects-grid">
+      <div
+        class="project-card"
+        v-for="projet in projetsFiltres"
+        :key="projet.titre"
+      >
+        <div class="proj-header">
+          <div class="proj-title">{{ projet.titre }}</div>
+          <span class="proj-status" :class="projet.statut === 'En ligne' ? 'status-online' : 'status-progress'">
+            {{ projet.statut }}
+          </span>
+        </div>
+        <p class="proj-desc">{{ projet.description }}</p>
+        <div class="tech-tags">
+          <span class="tech-tag" v-for="t in projet.technos" :key="t">{{ t }}</span>
+        </div>
+        <a class="proj-link">Voir le projet →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══ CONTACT ═══ -->
+  <section id="contact">
+    <div class="section-title">Contact</div>
+    <p class="section-tag">Formulaire géré par <code>v-model</code> Vue.js — liaison bidirectionnelle</p>
+
+    <form class="contact-form" @submit.prevent="envoyerMessage">
+      <div class="form-group">
+        <label>Nom complet</label>
+        <input v-model="form.nom" type="text" placeholder="Ton nom" required>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input v-model="form.email" type="email" placeholder="ton@email.com" required>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea v-model="form.message" rows="4" placeholder="Ton message..."></textarea>
+      </div>
+
+      <div v-if="form.nom" style="font-size:12px;color:#666;font-family:'Space Mono',monospace;text-align:center;">
+        ✍️ Vue voit ce que tu tapes : "{{ form.nom }}"
+      </div>
+
+      <button class="submit-btn" type="submit" :disabled="envoi">
+        {{ envoi ? 'Envoi en cours...' : 'Envoyer le message' }}
+      </button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    Fait avec <span>Vue.js 3</span> · <span>{{ prenom }}</span> · ESATIC {{ annee }}
+  </footer>
+
+  <!-- TOAST -->
+  <div class="toast" :class="{ show: toastVisible }">{{ toastMsg }}</div>
+
+</div>
+
+<script>
+const { createApp, ref, computed, onMounted, reactive } = Vue;
+
+createApp({
+  setup() {
+
+    /* ── DONNÉES PERSONNELLES ── */
+    const prenom    = ref('KOUASSI JEAN JOEL IVES');
+    const initiales = ref('JJI');
+    const annee     = ref(2026);
+    const badge     = ref('🎓 Étudiant ESATIC · Licence 1 SRIT');
+    const bio       = ref("Passionné par la tech, je construis mes compétences en cybersécurité, Python et développement web. Mon objectif : DevSecOps ou Data Engineer.");
+    const lightMode = ref(false);
+
+    /* ── NAVIGATION ── */
+    const sections      = ref([
+      { id: 'hero',        label: 'Accueil' },
+      { id: 'competences', label: 'Compétences' },
+      { id: 'projets',     label: 'Projets' },
+      { id: 'contact',     label: 'Contact' },
+    ]);
+    const activeSection = ref('hero');
+
+    function scrollTo(id) {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      activeSection.value = id;
+    }
+
+    function toggleTheme() {
+      lightMode.value = !lightMode.value;
+      document.body.classList.toggle('light', lightMode.value);
+    }
+
+    /* ── STATS ANIMÉES ── */
+    const stats = reactive([
+      { label: 'Compétences', target: 6,    animated: '0' },
+      { label: 'Projets',     target: 3,    animated: '0' },
+      { label: 'Promotion',   target: 2026, animated: '0' },
+    ]);
+
+    function animateStats() {
+      stats.forEach(s => {
+        const duration = s.target > 100 ? 1600 : 700;
+        const steps    = 60;
+        const inc      = s.target / steps;
+        let current    = 0;
+        const id = setInterval(() => {
+          current = Math.min(current + inc, s.target);
+          s.animated = Math.round(current).toLocaleString('fr-FR');
+          if (current >= s.target) clearInterval(id);
+        }, duration / steps);
+      });
+    }
+
+    /* ── COMPÉTENCES ── */
+    const competences = reactive([
+      { nom:'Python',    niveau:'Intermédiaire', pct:55, icone:'🐍', couleur:'linear-gradient(90deg,#4f8eff,#a78bfa)', barWidth:0, animated:0 },
+      { nom:'HTML',      niveau:'Intermédiaire', pct:60, icone:'🌐', couleur:'linear-gradient(90deg,#f97316,#fb923c)', barWidth:0, animated:0 },
+      { nom:'CSS',       niveau:'Intermédiaire', pct:55, icone:'🎨', couleur:'linear-gradient(90deg,#06b6d4,#67e8f9)', barWidth:0, animated:0 },
+      { nom:'Vue.js',    niveau:'Débutant',      pct:30, icone:'💚', couleur:'linear-gradient(90deg,#42b883,#35495e)', barWidth:0, animated:0 },
+      { nom:'Linux',     niveau:'Débutant',      pct:35, icone:'🐧', couleur:'linear-gradient(90deg,#f59e0b,#fbbf24)', barWidth:0, animated:0 },
+      { nom:'Réseaux',   niveau:'Débutant',      pct:30, icone:'🔗', couleur:'linear-gradient(90deg,#10b981,#34d399)', barWidth:0, animated:0 },
+    ]);
+
+    function animateSkills() {
+      competences.forEach(s => {
+        // Barre CSS
+        setTimeout(() => { s.barWidth = s.pct; }, 100);
+        // Compteur
+        let c = 0;
+        const id = setInterval(() => {
+          c = Math.min(c + 1, s.pct);
+          s.animated = c;
+          if (c >= s.pct) clearInterval(id);
+        }, 20);
+      });
+    }
+
+    /* ── PROJETS ── */
+    const filtres     = ref(['Tous', 'HTML/CSS', 'Python', 'Vue.js']);
+    const filtreActif = ref('Tous');
+
+    const projets = ref([
+      {
+        titre: 'Portfolio HTML/CSS/JS',
+        description: 'Premier projet web avec effets JavaScript avancés, particules et animations.',
+        technos: ['HTML', 'CSS', 'JavaScript'],
+        statut: 'En ligne',
+        categorie: 'HTML/CSS',
+      },
+      {
+        titre: 'Portfolio Django',
+        description: 'Refonte du portfolio avec Django — vues, templates, API JSON et formulaire.',
+        technos: ['Python', 'Django', 'HTML', 'CSS'],
+        statut: 'En cours',
+        categorie: 'Python',
+      },
+      {
+        titre: 'Portfolio Vue.js',
+        description: 'Portfolio réactif fait avec Vue 3 Composition API, v-model, v-for, computed.',
+        technos: ['Vue.js', 'JavaScript', 'CSS'],
+        statut: 'En cours',
+        categorie: 'Vue.js',
+      },
+    ]);
+
+    const projetsFiltres = computed(() => {
+      if (filtreActif.value === 'Tous') return projets.value;
+      return projets.value.filter(p => p.categorie === filtreActif.value);
+    });
+
+    /* ── FORMULAIRE ── */
+    const form = reactive({ nom: '', email: '', message: '' });
+    const envoi = ref(false);
+
+    function envoyerMessage() {
+      envoi.value = true;
+      setTimeout(() => {
+        envoi.value = false;
+        showToast(`✅ Merci ${form.nom} ! Message bien reçu.`);
+        form.nom = ''; form.email = ''; form.message = '';
+      }, 1500);
+    }
+
+    /* ── TOAST ── */
+    const toastMsg     = ref('');
+    const toastVisible = ref(false);
+    let toastTimer;
+
+    function showToast(msg) {
+      toastMsg.value = msg;
+      toastVisible.value = true;
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toastVisible.value = false; }, 2800);
+    }
+
+    /* ── LIFECYCLE ── */
+    onMounted(() => {
+      setTimeout(() => {
+        animateStats();
+        animateSkills();
+      }, 300);
+
+      // Scroll spy
+      window.addEventListener('scroll', () => {
+        const ids = ['hero','competences','projets','contact'];
+        for (const id of ids) {
+          const el = document.getElementById(id);
+          if (el) {
+            const rect = el.getBoundingClientRect();
+            if (rect.top <= 80 && rect.bottom > 80) {
+              activeSection.value = id;
+            }
+          }
+        }
+      });
+
+      // Easter egg Konami
+      const konami = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown',
+                       'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+      let ki = 0;
+      document.addEventListener('keydown', e => {
+        ki = (e.key === konami[ki]) ? ki + 1 : 0;
+        if (ki === konami.length) {
+          showToast('🎉 Easter egg Vue.js trouvé !');
+          ki = 0;
+        }
+      });
+    });
+
+    return {
+      prenom, initiales, annee, badge, bio, lightMode,
+      sections, activeSection, scrollTo, toggleTheme,
+      stats, competences, projets, projetsFiltres,
+      filtres, filtreActif,
+      form, envoi, envoyerMessage,
+      toastMsg, toastVisible, showToast,
+    };
+  }
+}).mount('#app');
+</script>
+</body>
+</html>
